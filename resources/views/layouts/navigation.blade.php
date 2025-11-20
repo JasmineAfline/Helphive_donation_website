@@ -10,13 +10,38 @@
                     </a>
                 </div>
 
+
+                <nav class="bg-white shadow-md p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">HelpHive</a>
+        <div class="space-x-4 flex items-center">
+            <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600">Home</a>
+            <a href="{{ route('donate.general') }}" class="text-gray-700 hover:text-blue-600">Donate</a>
+
+            @auth
+                @if(auth()->user()->is_admin)
+                    <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-blue-600">Admin</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}" class="inline-block">
+                    @csrf
+                    <button class="text-gray-700 hover:text-blue-600">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600">Login</a>
+                <a href="{{ route('register') }}" class="text-gray-700 hover:text-blue-600">Register</a>
+            @endauth
+        </div>
+    </div>
+</nav>
+
+
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <!-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

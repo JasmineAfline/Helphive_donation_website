@@ -1,36 +1,52 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'HelpHive')</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-red-50 text-gray-800">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md rounded-b-2xl">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="{{ route('home') }}" class="text-2xl font-bold text-red-600">HelpHive</a>
+            <ul class="flex space-x-6">
+                <li><a href="{{ route('home') }}" class="text-red-600 font-medium hover:text-red-700">Home</a></li>
+                <li><a href="{{ route('about') }}" class="text-red-600 font-medium hover:text-red-700">About</a></li>
+                <li><a href="{{ route('donate.general') }}" class="text-red-600 font-medium hover:text-red-700">Donate</a></li>
+                @auth
+                    <li><a href="{{ route('dashboard') }}" class="text-red-600 font-medium hover:text-red-700">Dashboard</a></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="text-red-600 font-medium hover:text-red-700">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    <li><a href="{{ route('login') }}" class="text-red-600 font-medium hover:text-red-700">Login</a></li>
+                    <li><a href="{{ route('register') }}" class="text-red-600 font-medium hover:text-red-700">Register</a></li>
+                @endauth
+            </ul>
         </div>
-    </body>
+    </nav>
+
+    <!-- Content -->
+    <main class="py-10">
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-inner mt-10 rounded-t-2xl">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
+            <p>&copy; 2025 HelpHive. All rights reserved.</p>
+            <div class="flex space-x-4 mt-2 md:mt-0">
+                <a href="#" class="hover:text-red-600">Facebook</a>
+                <a href="#" class="hover:text-red-600">Twitter</a>
+                <a href="#" class="hover:text-red-600">Instagram</a>
+            </div>
+        </div>
+    </footer>
+</body>
 </html>
