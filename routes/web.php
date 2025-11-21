@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 // --------------------
 // Authentication Routes
@@ -32,9 +33,19 @@ Route::get('/donate/{campaign}', [DonationController::class, 'create'])->name('d
 Route::post('/donate', [DonationController::class, 'store'])->name('donate.submit');
 
 // --------------------
+// User Dashboard Routes
+// --------------------
+Route::middleware(['auth'])->group(function () {
+    // Normal User Dashboard
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/profile', [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+});
+
+// --------------------
 // Admin Routes
 // --------------------
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+Route::middleware(['web', 'auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::resource('/campaigns', CampaignController::class);
 });

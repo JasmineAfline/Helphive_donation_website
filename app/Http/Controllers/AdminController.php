@@ -5,16 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Campaign;
 use App\Models\Donation;
+use App\Models\User;
 
 class AdminController extends Controller
 {
-    // Admin dashboard
     public function dashboard()
     {
-        $totalCampaigns = Campaign::count();
+        // Fetch statistics for the dashboard
+        $totalUsers = User::count();
         $totalDonations = Donation::sum('amount');
-        $campaigns = Campaign::all();
+        $totalCampaigns = Campaign::count();
+        $recentDonations = Donation::with(['user', 'campaign'])->latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('totalCampaigns', 'totalDonations', 'campaigns'));
+        // Return the dashboard view with the fetched data
+        return view('admin.dashboard', compact(
+            'totalUsers', 'totalDonations', 'totalCampaigns', 'recentDonations'
+        ));
     }
 }

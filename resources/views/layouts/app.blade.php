@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'HelpHive')</title>
+    <title>@yield('title', 'Swiss Solidarity')</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-red-50 text-gray-800">
+<body class="bg-red-50 text-gray-800 min-h-screen flex flex-col">
 
     <!-- Navbar -->
     <nav class="bg-white shadow-md rounded-b-2xl">
@@ -33,14 +33,16 @@
     </nav>
 
     <!-- Content -->
-    <main class="py-10">
-        @yield('content')
+    <main class="flex-1 py-10">
+        <div class="max-w-7xl mx-auto px-6">
+            @yield('content')
+        </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-white shadow-inner mt-10 rounded-t-2xl">
         <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
-            <p>&copy; 2025 HelpHive. All rights reserved.</p>
+            <p>&copy; 2025 Swiss Solidarity. All rights reserved.</p>
             <div class="flex space-x-4 mt-2 md:mt-0">
                 <a href="#" class="hover:text-red-600">Facebook</a>
                 <a href="#" class="hover:text-red-600">Twitter</a>
@@ -48,5 +50,6 @@
             </div>
         </div>
     </footer>
+
 </body>
 </html>
