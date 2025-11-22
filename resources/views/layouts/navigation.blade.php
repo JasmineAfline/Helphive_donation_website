@@ -16,7 +16,7 @@
         <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">HelpHive</a>
         <div class="space-x-4 flex items-center">
             <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600">Home</a>
-            <a href="{{ route('donate.general') }}" class="text-gray-700 hover:text-blue-600">Donate</a>
+            <a href="{{ route('donate.page') }}" class="text-gray-700 hover:text-blue-600">Donate</a>
 
             @auth
                 @if(auth()->user()->is_admin)

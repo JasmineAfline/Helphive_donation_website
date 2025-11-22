@@ -21,13 +21,21 @@
         </div>
     @endif
 
-    <form action="{{ route('donate') }}" method="POST" class="space-y-4">
+    <form action="{{ route('donate.submit') }}" method="POST" class="space-y-4">
         @csrf
         <input type="hidden" name="campaign_id" value="{{ $campaign->id }}">
 
+        <!-- Contact Info -->
+        <h2 class="text-lg font-semibold mb-2">Your Information</h2>
         <div>
-            <label for="name" class="block text-gray-700 font-medium mb-1">Name</label>
-            <input type="text" name="name" id="name" value="{{ old('name') }}" required
+            <label for="first_name" class="block text-gray-700 font-medium mb-1">First Name</label>
+            <input type="text" name="first_name" id="first_name" value="{{ old('first_name') }}" required
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+            <label for="last_name" class="block text-gray-700 font-medium mb-1">Last Name</label>
+            <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}" required
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
@@ -37,16 +45,55 @@
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
+        <!-- Donation Amount -->
         <div>
-            <label for="amount" class="block text-gray-700 font-medium mb-1">Donation Amount (USD)</label>
+            <label for="amount" class="block text-gray-700 font-medium mb-1">Donation Amount (KES)</label>
             <input type="number" name="amount" id="amount" min="1" value="{{ old('amount') }}" required
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
+        <!-- Payment Method -->
+        <h2 class="text-lg font-semibold mt-4 mb-2">Payment Method</h2>
+        <div>
+            <label for="payment_method" class="block text-gray-700 font-medium mb-1">Choose Payment Method</label>
+            <select name="payment_method" id="payment_method" required
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Select Payment Method</option>
+                <option value="mobile_money">Mobile Money</option>
+                <option value="card">Card</option>
+                <option value="paypal">PayPal</option>
+            </select>
+        </div>
+
+        <!-- Mobile Money Providers -->
+        <div id="mobile_money_provider_div" style="display: none;">
+            <label for="mobile_money_provider" class="block text-gray-700 font-medium mb-1">Mobile Money Provider</label>
+            <select name="mobile_money_provider" id="mobile_money_provider"
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Select Provider</option>
+                <option value="mpesa">M-Pesa</option>
+                <option value="airtel_money">Airtel Money</option>
+            </select>
+        </div>
+
         <button type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
             Donate Now
         </button>
     </form>
 </div>
+
+<script>
+    const paymentMethod = document.getElementById('payment_method');
+    const providerDiv = document.getElementById('mobile_money_provider_div');
+
+    paymentMethod.addEventListener('change', function() {
+        if (this.value === 'mobile_money') {
+            providerDiv.style.display = 'block';
+        } else {
+            providerDiv.style.display = 'none';
+            document.getElementById('mobile_money_provider').value = '';
+        }
+    });
+</script>
 @endsection

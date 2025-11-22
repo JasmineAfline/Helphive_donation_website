@@ -15,7 +15,7 @@
             <ul class="flex space-x-6">
                 <li><a href="{{ route('home') }}" class="text-red-600 font-medium hover:text-red-700">Home</a></li>
                 <li><a href="{{ route('about') }}" class="text-red-600 font-medium hover:text-red-700">About</a></li>
-                <li><a href="{{ route('donate.general') }}" class="text-red-600 font-medium hover:text-red-700">Donate</a></li>
+                
                 @auth
                     <li><a href="{{ route('dashboard') }}" class="text-red-600 font-medium hover:text-red-700">Dashboard</a></li>
                     <li>

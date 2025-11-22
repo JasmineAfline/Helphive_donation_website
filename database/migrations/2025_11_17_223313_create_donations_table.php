@@ -15,7 +15,10 @@ return new class extends Migration
         $table->id();
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
         $table->foreignId('campaign_id')->constrained()->onDelete('cascade');
-        $table->decimal('amount', 10, 2);
+        $table->decimal('amount', 15, 2);
+        $table->string('payment_method');
+        $table->string('phone')->nullable();
+        $table->boolean('completed')->default(false);
         $table->timestamps();
     });
 }
