@@ -12,7 +12,7 @@ class CampaignController extends Controller
     public function index()
     {
         $campaigns = Campaign::all();
-        return view('admin.campaigns.index', compact('campaigns'));
+        return view('campaigns.index', compact('campaigns'));
     }
 
     // Show a single campaign

@@ -9,20 +9,34 @@ return new class extends Migration
     public function up()
     {
         Schema::table('donations', function (Blueprint $table) {
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('address')->nullable();
-            $table->string('payment_method')->nullable();
-            $table->string('mobile_money_provider')->nullable();
-            $table->boolean('cover_fee')->default(0);
+            if (!Schema::hasColumn('donations', 'first_name')) {
+                $table->string('first_name')->nullable();
+            }
+            if (!Schema::hasColumn('donations', 'last_name')) {
+                $table->string('last_name')->nullable();
+            }
+            if (!Schema::hasColumn('donations', 'email')) {
+                $table->string('email')->nullable();
+            }
+            if (!Schema::hasColumn('donations', 'address')) {
+                $table->string('address')->nullable();
+            }
+            if (!Schema::hasColumn('donations', 'payment_method')) {
+                $table->string('payment_method')->nullable();
+            }
+            if (!Schema::hasColumn('donations', 'mobile_money_provider')) {
+                $table->string('mobile_money_provider')->nullable();
+            }
+            if (!Schema::hasColumn('donations', 'cover_fee')) {
+                $table->boolean('cover_fee')->default(0);
+            }
         });
     }
 
     public function down()
     {
         Schema::table('donations', function (Blueprint $table) {
-            $table->dropColumn([
+            $columns = [
                 'first_name',
                 'last_name',
                 'email',
@@ -30,7 +44,14 @@ return new class extends Migration
                 'payment_method',
                 'mobile_money_provider',
                 'cover_fee',
-            ]);
+            ];
+
+            // Only drop columns that exist
+            foreach ($columns as $column) {
+                if (Schema::hasColumn('donations', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 };

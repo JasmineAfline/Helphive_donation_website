@@ -8,15 +8,20 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('donations', function (Blueprint $table) {
+      Schema::table('donations', function (Blueprint $table) {
+        if (!Schema::hasColumn('donations', 'phone')) {
             $table->string('phone')->nullable()->after('payment_method');
-        });
+        }
+    });  
     }
 
     public function down()
     {
-        Schema::table('donations', function (Blueprint $table) {
+       Schema::table('donations', function (Blueprint $table) {
+        if (Schema::hasColumn('donations', 'phone')) {
             $table->dropColumn('phone');
-        });
+        }
+    });
+    
     }
 };

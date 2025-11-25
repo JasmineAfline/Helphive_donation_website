@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model; // <-- IMPORTANT
+use Illuminate\Database\Eloquent\Model;
 
 class Campaign extends Model
 {
@@ -13,11 +13,8 @@ class Campaign extends Model
         'title',
         'description',
         'goal_amount',
-        'current_amount',
+        'current_amount', // Assuming you will track the amount raised
+        // 'start_date',
+        // 'end_date',
     ];
-
-    public function donations()
-    {
-        return $this->hasMany(Donation::class);
-    }
 }

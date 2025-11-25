@@ -11,14 +11,15 @@
 
     <p class="text-gray-700 mb-3">{{ $campaign->description }}</p>
 
-    <p class="text-sm text-gray-500"><strong>Goal:</strong> ${{ number_format($campaign->goal_amount) }}</p>
-    <p class="text-sm text-gray-500 mb-4"><strong>Raised:</strong> ${{ number_format($campaign->current_amount) }}</p>
+    <p class="text-sm text-gray-500"><strong>Goal:</strong> ${{ number_format($campaign->goal_amount, 2) }}</p>
+    <p class="text-sm text-gray-500 mb-4"><strong>Raised:</strong> ${{ number_format($campaign->current_amount, 2) }}</p>
 
     <a href="{{ route('donate.campaign', $campaign->id) }}"
        class="mt-4 inline-block bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition">
        Donate
     </a>
 </div>
+
 @endforeach
 
 </div>

@@ -1,56 +1,67 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Admin Dashboard')
 
 @section('content')
 <div class="flex flex-col md:flex-row gap-6">
 
-    <!-- Sidebar -->
     <aside class="w-full md:w-1/4 bg-white p-6 rounded-lg shadow">
-        <h2 class="text-xl font-bold mb-4">My Dashboard</h2>
+        <h2 class="text-xl font-bold mb-4">Admin Dashboard</h2>
         <ul class="space-y-2">
-            <li><a href="{{ route('dashboard') }}" class="text-red-600 hover:text-red-700">Overview</a></li>
-            <li><a href="{{ route('campaigns.index') }}" class="text-red-600 hover:text-red-700">Campaigns</a></li>
-            <li><a href="{{ route('profile.edit') }}" class="text-red-600 hover:text-red-700">Profile</a></li>
-            <li><a href="{{ route('donate.general') }}" class="text-red-600 hover:text-red-700">Donate</a></li>
+            <li><a href="{{ route('admin.dashboard') }}">Overview</a></li>
+            <li><a href="{{ route('admin.campaigns.index') }}">Manage Campaigns</a></li>
+            <li><a href="#">Reports</a></li>
         </ul>
     </aside>
 
-    <!-- Main content -->
     <main class="flex-1 space-y-6">
 
-        <!-- Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
             <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-gray-500 font-medium">Total Donations</h3>
-                <p class="text-2xl font-bold">${{ $totalDonations ?? 0 }}</p>
+                <h3>Total Users</h3>
+                <p>{{ $totalUsers }}</p>
             </div>
+
             <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-gray-500 font-medium">Total Campaigns</h3>
-                <p class="text-2xl font-bold">{{ $totalCampaigns ?? 0 }}</p>
+                <h3>Total Donations</h3>
+                <p>${{ $totalDonations }}</p>
             </div>
+
             <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-gray-500 font-medium">My Donations</h3>
-                <p class="text-2xl font-bold">{{ $myDonations->count() }}</p>
+                <h3>Total Campaigns</h3>
+                <p>{{ $totalCampaigns }}</p>
             </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3>Recent Donations</h3>
+                <p>{{ $recentDonations->count() }}</p>
+            </div>
+
         </div>
 
-        <!-- Recent Donations -->
-        <div class="bg-white p-6 rounded-lg shadow">
+        <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
             <h3 class="text-xl font-bold mb-4">Recent Donations</h3>
-            @if($myDonations->isEmpty())
-                <p>No donations yet.</p>
-            @else
-                <ul class="space-y-2">
-                    @foreach($myDonations as $donation)
-                        <li>
-                            <span class="font-medium">{{ $donation->campaign->title ?? 'Unknown Campaign' }}</span> 
-                            - ${{ $donation->amount }} 
-                            <span class="text-gray-500 text-sm">({{ $donation->created_at->format('d M Y') }})</span>
-                        </li>
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Campaign</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($recentDonations as $donation)
+                    <tr>
+                        <td>{{ $donation->user->name }}</td>
+                        <td>{{ $donation->campaign->title }}</td>
+                        <td>${{ $donation->amount }}</td>
+                        <td>{{ $donation->created_at->format('d M Y') }}</td>
+                    </tr>
                     @endforeach
-                </ul>
-            @endif
+                </tbody>
+            </table>
         </div>
 
     </main>
