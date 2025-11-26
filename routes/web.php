@@ -26,12 +26,14 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', fn() => view('about'))->name('about');
 
+// Campaigns
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
 Route::get('/campaigns/{id}', [CampaignController::class, 'show'])->name('campaigns.show');
 
 // Donations
 Route::get('/donate/{campaign}', [DonationsController::class, 'create'])->name('donate.campaign');
 Route::post('/donate', [DonationsController::class, 'store'])->name('donate.submit');
+Route::get('/donate', fn() => view('donate'))->name('donate.page');
 
 // M-Pesa
 Route::get('/checkout/{campaign}', [MpesaController::class, 'checkout'])->name('mpesa.checkout');
@@ -39,7 +41,6 @@ Route::post('/mpesa/donate', [MpesaController::class, 'donate'])->name('mpesa.do
 Route::post('/mpesa/callback', [MpesaController::class, 'callback'])
     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])
     ->name('mpesa.callback');
-
 Route::get('/donation/success', [MpesaController::class, 'success'])->name('mpesa.success');
 
 // ------------------------
@@ -59,17 +60,23 @@ Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        // Dashboard
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('/campaigns', [AdminController::class, 'index'])->name('campaigns.index');
-    Route::get('/campaigns/create', [AdminController::class, 'create'])->name('campaigns.create');
-    Route::post('/campaigns', [AdminController::class, 'store'])->name('campaigns.store');
+        // Campaigns
+        Route::get('/campaigns', [AdminController::class, 'index'])->name('campaigns.index');
+        Route::get('/campaigns/create', [AdminController::class, 'create'])->name('campaigns.create');
+        Route::post('/campaigns', [AdminController::class, 'store'])->name('campaigns.store');
+        Route::get('/campaigns/{id}/edit', [AdminController::class, 'edit'])->name('campaigns.edit');
+        Route::put('/campaigns/{id}', [AdminController::class, 'update'])->name('campaigns.update');
+        Route::delete('/campaigns/{id}', [AdminController::class, 'destroy'])->name('campaigns.destroy');
 
-    Route::get('/campaigns/{id}/edit', [AdminController::class, 'edit'])->name('campaigns.edit');
-    Route::put('/campaigns/{id}', [AdminController::class, 'update'])->name('campaigns.update');
+        // Users Management
+        Route::get('/users', [AdminController::class, 'usersIndex'])->name('users.index');
+        Route::get('/users/{id}/edit', [AdminController::class, 'usersEdit'])->name('users.edit');
+        Route::put('/users/{id}', [AdminController::class, 'usersUpdate'])->name('users.update');
+        Route::delete('/users/{id}', [AdminController::class, 'usersDestroy'])->name('users.destroy');
 
-    Route::delete('/campaigns/{id}', [AdminController::class, 'destroy'])->name('campaigns.destroy');
-
-     // REPORTS PAGE
-    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
-});
+        // Reports
+        Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    });

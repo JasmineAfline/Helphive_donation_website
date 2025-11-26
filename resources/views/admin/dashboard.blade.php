@@ -11,7 +11,7 @@
         <ul class="space-y-2">
             <li><a href="{{ route('admin.dashboard') }}" class="text-red-600 hover:text-red-700">Overview</a></li>
             <li><a href="{{ route('admin.campaigns.index') }}" class="text-red-600 hover:text-red-700">Manage Campaigns</a></li>
-            <li><a href="#" class="text-red-600 hover:text-red-700">Reports</a></li>
+            <li><a href="{{ route('admin.reports') }}" class="text-red-600 hover:text-red-700">Reports</a></li>
             <li><a href="{{ route('profile.edit') }}" class="text-red-600 hover:text-red-700">Profile</a></li>
         </ul>
     </aside>
@@ -65,6 +65,5 @@
         </div>
 
     </main>
-
 </div>
 @endsection
