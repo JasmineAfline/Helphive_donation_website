@@ -10,9 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MpesaController;
 
-// --------------------
 // Authentication
-// --------------------
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
@@ -20,50 +18,43 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-// --------------------
-// Public Pages
-// --------------------
+// Public
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', fn() => view('about'))->name('about');
 
 // Campaigns
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
-Route::get('/campaigns/{id}', [CampaignController::class, 'show'])->name('campaigns.show');
+Route::get('/campaigns/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
 
-// Donations
+// Donations (blade pages)
+Route::get('/donate', fn() => view('donate'))->name('donate.page');
 Route::get('/donate/{campaign}', [DonationsController::class, 'create'])->name('donate.campaign');
 Route::post('/donate', [DonationsController::class, 'store'])->name('donate.submit');
-Route::get('/donate', fn() => view('donate'))->name('donate.page');
 
-// M-Pesa
+// M-Pesa (checkout + STK + callback)
 Route::get('/checkout/{campaign}', [MpesaController::class, 'checkout'])->name('mpesa.checkout');
 Route::post('/mpesa/donate', [MpesaController::class, 'donate'])->name('mpesa.donate');
+
+// Callback should be reachable from Safaricom (no CSRF) — we disable CSRF here
 Route::post('/mpesa/callback', [MpesaController::class, 'callback'])
     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])
     ->name('mpesa.callback');
+
 Route::get('/donation/success', [MpesaController::class, 'success'])->name('mpesa.success');
 
-// ------------------------
-// User Dashboard
-// ------------------------
+// User dashboard (auth)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [UserController::class, 'editProfile'])->name('profile.edit');
     Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 });
 
-// ------------------------
-// Admin Routes (Role = admin)
-// ------------------------
+// Admin
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
-
-        // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
-        // Campaigns
         Route::get('/campaigns', [AdminController::class, 'index'])->name('campaigns.index');
         Route::get('/campaigns/create', [AdminController::class, 'create'])->name('campaigns.create');
         Route::post('/campaigns', [AdminController::class, 'store'])->name('campaigns.store');
@@ -71,12 +62,10 @@ Route::prefix('admin')
         Route::put('/campaigns/{id}', [AdminController::class, 'update'])->name('campaigns.update');
         Route::delete('/campaigns/{id}', [AdminController::class, 'destroy'])->name('campaigns.destroy');
 
-        // Users Management
         Route::get('/users', [AdminController::class, 'usersIndex'])->name('users.index');
         Route::get('/users/{id}/edit', [AdminController::class, 'usersEdit'])->name('users.edit');
         Route::put('/users/{id}', [AdminController::class, 'usersUpdate'])->name('users.update');
         Route::delete('/users/{id}', [AdminController::class, 'usersDestroy'])->name('users.destroy');
 
-        // Reports
         Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
     });

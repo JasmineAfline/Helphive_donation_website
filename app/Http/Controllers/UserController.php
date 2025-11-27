@@ -30,7 +30,8 @@ class UserController extends Controller
             ->latest()
             ->get();
 
-        return view('dashboard', compact(
+        // Return a user-specific dashboard view (separate from admin dashboard)
+        return view('user.dashboard', compact(
             'user',
             'totalUsers',
             'totalDonations',

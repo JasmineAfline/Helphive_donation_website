@@ -34,7 +34,8 @@ class DonationsController extends Controller
         ]);
 
         // Redirect to phone number entry page
-        return redirect()->route('donation.phone');
+       return redirect()->route('mpesa.checkout', $validated['campaign_id']);
+
     }
 
     // Show phone number form
